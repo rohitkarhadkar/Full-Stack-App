@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: web
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    environment:
+      - MONGO_INITDB_DATABASE=movie-api-db
+      - MONGO_INITDB_ROOT_USERNAME=
+      - MONGO_INITDB_ROOT_PASSWORD=
+    ports:
+      - 8080:8080
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    # environment:
+    #   - MONGO_INITDB_DATABASE=movie-api-db
+    #   - MONGO_INITDB_ROOT_USERNAME=tempuser
+    #   - MONGO_INITDB_ROOT_PASSWORD=temppassword
+    # volumes:
+    #   - mongo-data:./data.json
+    ports:
+      - 27017:27017
+
+volumes:
+  mongo-data:
